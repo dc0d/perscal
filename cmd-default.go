@@ -100,7 +100,7 @@ func (c *cmdDefault) month() (state, error) {
 		fmt.Fprintln(buf, persical.PersianMonth(_today.Persian.Month), _today.Persian.Year)
 		fmt.Fprintln(buf, "---------------------")
 		fmt.Fprintln(buf, " Sa Su Mo Tu We Th Fr")
-		for _, v := range data.Days {
+		for k, v := range data.Days {
 			wd := int((v.Weekday + 1) % 7)
 			if !firstLine {
 				firstLine = true
@@ -119,7 +119,7 @@ func (c *cmdDefault) month() (state, error) {
 				color.New(attrs...).Fprintf(buf, "%2d", v.Persian.Day)
 			}
 
-			if wd == 6 {
+			if k != len(data.Days)-1 && wd == 6 {
 				fmt.Fprint(buf, "\n")
 			}
 		}
@@ -153,7 +153,7 @@ func monthData(gdate time.Time) (result Month, today Day) {
 			Persian:   Date{Year: py, Month: pm, Day: pd},
 			Gregorian: Date{Year: gdate.Year(), Month: int(gdate.Month()), Day: gdate.Day()},
 		})
-		gdate = gdate.Add(time.Hour * 24)
+		gdate = gdate.AddDate(0, 0, 1)
 		py, pm, pd = persical.GregorianToPersian(gdate.Year(), int(gdate.Month()), gdate.Day())
 	}
 	return
