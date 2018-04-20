@@ -32,7 +32,7 @@ func newCmdDefault(st *stat) *cmdDefault {
 }
 
 func (c *cmdDefault) start() (state, error) {
-	if c.st.input.Today {
+	if c.st.input.today {
 		return c.today, nil
 	}
 	return c.month, nil
@@ -61,8 +61,33 @@ func (c *cmdDefault) today() (state, error) {
 }
 
 func (c *cmdDefault) month() (state, error) {
-	now := iranNow()
-	data, _today := monthData(now)
+	if c.st.input.month < 0 {
+		errlog.Fatalln("month can not be negative: -m", c.st.input.month)
+		return nil, nil
+	}
+	if c.st.input.year < 0 {
+		errlog.Fatalln("year can not be negative: -y", c.st.input.year)
+		return nil, nil
+	}
+
+	date := iranNow()
+
+	var todayNoHighLight bool
+	if c.st.input.month > 0 || c.st.input.year > 0 {
+		py, pm, pd := persical.GregorianToPersian(date.Year(), int(date.Month()), date.Day())
+		pd = 1
+		if c.st.input.month > 0 {
+			pm = c.st.input.month
+		}
+		if c.st.input.year > 0 {
+			py = c.st.input.year
+		}
+		gy, gm, gd := persical.PersianToGregorian(py, pm, pd)
+		date = time.Date(gy, time.Month(gm), gd, 0, 0, 0, 0, time.Local)
+		todayNoHighLight = true
+	}
+
+	data, _today := monthData(date)
 	if c.st.piped {
 		js, err := json.Marshal(&data)
 		if err != nil {
@@ -82,7 +107,7 @@ func (c *cmdDefault) month() (state, error) {
 				fmt.Fprint(buf, strings.Repeat("   ", wd))
 			}
 			var attrs []color.Attribute
-			if v.Persian.Day == _today.Persian.Day {
+			if !todayNoHighLight && v.Persian.Day == _today.Persian.Day {
 				attrs = append(attrs, color.FgBlack, color.BgWhite)
 			}
 

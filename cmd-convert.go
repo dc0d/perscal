@@ -31,8 +31,8 @@ func newCmdConvert(st *stat) *cmdConvert {
 }
 
 func (c *cmdConvert) start() (state, error) {
-	if !c.st.input.convert.P2G &&
-		!c.st.input.convert.G2P {
+	if !c.st.input.convert.p2g &&
+		!c.st.input.convert.g2p {
 		errlog.Fatalln("conversion direction not specified")
 		return nil, nil
 	}
@@ -52,7 +52,7 @@ func (c *cmdConvert) start() (state, error) {
 }
 
 func (c *cmdConvert) convert() (state, error) {
-	if c.st.input.convert.G2P {
+	if c.st.input.convert.g2p {
 		gdate := time.Date(c.st.input.convert.Year, time.Month(c.st.input.convert.Month), c.st.input.convert.Day, 0, 0, 0, 0, time.Local)
 		py, pm, pd := persical.GregorianToPersian(gdate.Year(), int(gdate.Month()), gdate.Day())
 		var d Day
@@ -61,7 +61,7 @@ func (c *cmdConvert) convert() (state, error) {
 		d.Gregorian.Year, d.Gregorian.Month, d.Gregorian.Day = gdate.Year(), int(gdate.Month()), gdate.Day()
 		c.day = d
 	}
-	if c.st.input.convert.P2G {
+	if c.st.input.convert.p2g {
 		py, pm, pd := c.st.input.convert.Year, c.st.input.convert.Month, c.st.input.convert.Day
 		gy, gm, gd := persical.PersianToGregorian(py, pm, pd)
 		gdate := time.Date(gy, time.Month(gm), gd, 0, 0, 0, 0, time.Local)

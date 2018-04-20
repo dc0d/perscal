@@ -14,13 +14,15 @@ type stat struct {
 
 	input struct {
 		// top level
-		JSON  bool
-		Today bool
+		json  bool
+		today bool
+		month int
+		year  int
 
 		convert struct {
 			Date
-			P2G bool
-			G2P bool
+			p2g bool
+			g2p bool
 		}
 	}
 }

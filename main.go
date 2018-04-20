@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 
-	if st.input.JSON {
+	if st.input.json {
 		st.piped = true
 	}
 
@@ -51,15 +51,17 @@ func initCommands(st *stat) (top *flag.FlagSet, sub []*flag.FlagSet) {
 		convertFlags = flag.NewFlagSet("conv", flag.ExitOnError)
 	)
 
-	topFlags.BoolVar(&st.input.Today, "t", st.input.Today, "-t show info about today")
-	topFlags.BoolVar(&st.input.JSON, "j", st.input.JSON, "-j json output")
+	topFlags.BoolVar(&st.input.today, "t", st.input.today, "-t show info about today")
+	topFlags.BoolVar(&st.input.json, "j", st.input.json, "-j json output")
+	topFlags.IntVar(&st.input.month, "m", st.input.month, "-m persian month")
+	topFlags.IntVar(&st.input.year, "y", st.input.year, "-m persian year")
 	top = topFlags
 
 	convertFlags.IntVar(&st.input.convert.Year, "y", st.input.convert.Year, "-y year")
 	convertFlags.IntVar(&st.input.convert.Month, "m", st.input.convert.Month, "-m month")
 	convertFlags.IntVar(&st.input.convert.Day, "d", st.input.convert.Day, "-d day")
-	convertFlags.BoolVar(&st.input.convert.P2G, "p2g", st.input.convert.P2G, "-p2g persian to gregorian")
-	convertFlags.BoolVar(&st.input.convert.G2P, "g2p", st.input.convert.G2P, "-g2p gregorian to persian")
+	convertFlags.BoolVar(&st.input.convert.p2g, "p2g", st.input.convert.p2g, "-p2g persian to gregorian")
+	convertFlags.BoolVar(&st.input.convert.g2p, "g2p", st.input.convert.g2p, "-g2p gregorian to persian")
 	sub = append(sub, convertFlags)
 
 	return
