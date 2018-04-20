@@ -1,0 +1,19 @@
+
+name: perscal
+version: '0.1'
+summary: command line persian calendar - also provides json output
+description: |
+  command line persian calendar - also provides json output with -j flag or if the output is piped
+
+grade: devel
+confinement: devmode
+
+apps:
+  perscal:
+    command: perscal
+
+parts:
+  perscal:
+    source: .
+    plugin: go
+    go-importpath: github.com/dc0d/perscal
