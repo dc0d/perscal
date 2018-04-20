@@ -1,6 +1,6 @@
 
 name: perscal
-version: '0.1'
+version: '0.1.1'
 summary: command line persian calendar - also provides json output
 description: |
   command line persian calendar - also provides json output with -j flag or if the output is piped
